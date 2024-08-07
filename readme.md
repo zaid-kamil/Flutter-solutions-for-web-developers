@@ -6,6 +6,8 @@ UPCOMING BOOK
 - [x] Chapter 1 - Mastering Dart Basics for Flutter - Food Ordering Program
 - [x] Chapter 2 - Advanced Dart Programming Techniques - Fortune Cookie Oracle
 - [x] Chapter 3 - Designing Stunning UIs for the Web - Dartbyte
+- [ ] Chapter 4 - Advanced UI Design and Animation  - Staggered Menu implementation
+- [ ] Chapter 4 - Advanced UI Design and Animation  - Hero Animation implementation
 - [ ] Chapter 4 - Advanced UI Design and Animation  - Dartbyte (Update 1)
 - [ ] Chapter 5 - Incorporating Machine Learning and AI - Diabetes Classifier
 - [ ] Chapter 5 - Incorporating Machine Learning and AI - House Price Prediction
