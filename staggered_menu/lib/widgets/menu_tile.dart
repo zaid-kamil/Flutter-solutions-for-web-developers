@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class MenuTile extends StatefulWidget {
   final String title;
   final String imgId;
+  final IconData icon;
 
   const MenuTile({
     super.key,
     required this.title,
     required this.imgId,
+    required this.icon,
   });
 
   @override
@@ -41,11 +43,27 @@ class _MenuTileState extends State<MenuTile> {
             color: Colors.white,
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
-          ),
-          child: Text(
-            widget.title,
+            shadows: const [
+              Shadow(
+                color: Colors.black,
+                blurRadius: 10,
+              ),
+            ],
           ),
           duration: const Duration(milliseconds: 150),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                widget.icon,
+                size: 50,
+                color: Colors.white,
+              ),
+              Text(
+                widget.title,
+              ),
+            ],
+          ),
         ),
         Material(
           color: Colors.transparent,

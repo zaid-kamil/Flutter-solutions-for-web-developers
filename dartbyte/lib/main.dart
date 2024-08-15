@@ -4,226 +4,234 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  // run the DartByteApp widget
+  runApp(const DartByteApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class DartByteApp extends StatelessWidget {
+  const DartByteApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Dart byte',
-        home: const MyHomePage(),
-        debugShowCheckedModeBanner: false,
-        scrollBehavior: const MaterialScrollBehavior().copyWith(
-          dragDevices: {
-            PointerDeviceKind.touch,
-            PointerDeviceKind.mouse,
-            PointerDeviceKind.unknown,
-          },
-        ));
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('DartByte'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () {},
-          ),
-          // todo icons here
-        ],
-      ),
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          if (constraints.maxWidth > 1000) {
-            return Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 1000,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 400,
-                          width: double.infinity,
-                          child: Expanded(
-                            child: Scrollbar(
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: const [
-                                  NewsCard(
-                                      "Dart collections", "Noor ul Aman", 1),
-                                  NewsCard("Web is Amazing", "Zaid Kamil", 2),
-                                  NewsCard(
-                                      "Responsive Design", "Amna Ghazal", 3),
-                                  NewsCard("List of Flutter Widgets",
-                                      "Bharvi Sharma", 4),
-                                  NewsCard("Learn Dart", "Akbar Ahmad", 5),
-                                  NewsCard("Learn Dart", "Adeeba Ahmad", 6),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: List.generate(4, (index) {
-                              var views = (index + 1) * Random().nextInt(1000);
-                              return Expanded(
-                                child: Card(
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  elevation: 5,
-                                  margin: const EdgeInsets.all(10),
-                                  child: Column(
-                                    children: [
-                                      Image.network(
-                                        "https://picsum.photos/id/${index + 10}/500/500",
-                                        fit: BoxFit.fill,
-                                      ),
-                                      Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                'Dartbyte #${index + 1}',
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Text('Views: $views'),
-                                            ],
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                        // Center-aligned 2-column layout of news articles
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  children: List.generate(6, (index) {
-                                    return const NewsArticleItem();
-                                  }),
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  children: List.generate(5, (index) {
-                                    return const NewsArticleItem();
-                                  }),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            );
-          } else {
-            return const Placeholder();
-          }
+      title: 'Dart byte',
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        // for web and desktop, we need to add mouse and unknown as a drag device
+        dragDevices: {
+          PointerDeviceKind.unknown,
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse,
         },
       ),
+      // remove debug banner
+      debugShowCheckedModeBanner: false,
+      // set the home page
+      home: const ByteBoardPage(),
     );
   }
 }
 
-class NewsCard extends StatelessWidget {
+class ByteBoardPage extends StatelessWidget {
+  const ByteBoardPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('DartByte'),
+          // add actions to the right corner of app bar
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        body: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+          // check if the width is greater than 1200
+          if (constraints.maxWidth > 1200) {
+            return Row(
+                // mainAxisSize set to max to take full width
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // create a fixed width container in the center
+                  SizedBox(
+                      width: 1200,
+                      // SingleChildScrollView to make the content scrollable
+                      child: SingleChildScrollView(
+                          child: Column(
+                              // the 3 sections of the page
+                              children: [
+                            TopSlider(),
+                            RecommendedNews(),
+                            AllArticleRow(),
+                          ])))
+                ]);
+          } else {
+            // if the width is less than 1200, return a placeholder
+            return const Placeholder();
+          }
+        }));
+  }
+}
+
+class TopSlider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        // sets the height of the slider
+        height: 400,
+        width: double.infinity,
+        child: Expanded(
+            child: Scrollbar(
+                // horizontal scroll view
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    // NewsCard widget is used to display the news
+                    children: const [
+              ByteNewsCard("Dart collections", "Noor ul Aman", 1),
+              ByteNewsCard("Web is Amazing", "Zaid Kamil", 2),
+              ByteNewsCard("Responsive Design", "Amna Ghazal", 3),
+              ByteNewsCard("List of Flutter Widgets", "Bharvi Sharma", 4),
+              ByteNewsCard("Learn Dart", "Akbar Ahmad", 5),
+              ByteNewsCard("Learn Dart", "Adeeba Ahmad", 6),
+            ]))));
+  }
+}
+
+class ByteNewsCard extends StatelessWidget {
   final String title;
   final String author;
   final int imgId;
 
-  const NewsCard(this.title, this.author, this.imgId, {super.key});
+  const ByteNewsCard(this.title, this.author, this.imgId, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 5,
-      margin: const EdgeInsets.all(10),
-      child: Column(
-        children: [
+        // this is used to clip the card shape
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        elevation: 5,
+        margin: const EdgeInsets.all(10),
+        child: Column(children: [
+          // Image.network is used to load the image from the network
           Image.network(
             "https://picsum.photos/id/$imgId/500/300",
+            // fits the image to cover the whole area
             fit: BoxFit.cover,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text(
-                  '$title',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              padding: const EdgeInsets.all(8.0),
+              child: Column(children: [
+                Text(title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )),
                 const SizedBox(height: 8),
                 Text('by $author'),
-              ],
+              ]))
+        ]));
+  }
+}
+
+class RecommendedNews extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          // generate 4 cards in a row
+          children: List.generate(4, (index) {
+            // generate random views for each card between 0 and 1000
+            var views = (index + 1) * Random().nextInt(1000);
+            return Expanded(
+                // each card is wrapped in an expanded widget to take equal space
+                child: Card(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    elevation: 5,
+                    margin: const EdgeInsets.all(10),
+                    child: Column(children: [
+                      // Load the image from the network
+                      Image.network(
+                        "https://picsum.photos/id/${index + 10}/500/500",
+                        fit: BoxFit.fill,
+                      ),
+                      Padding(
+                          // add padding to the text
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(children: [
+                            // cocatenate the index with the text
+                            Text(
+                              'Dartbyte #${index + 1}',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text('Views: $views'),
+                          ]))
+                    ])));
+          }),
+        ));
+  }
+}
+
+class AllArticleRow extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+          // align the items to the start
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // 2 columns in a row
+          children: [
+            Expanded(
+              child: Column(
+                // generate 6 news article items
+                children: List.generate(6, (index) {
+                  return NewsArticleItem();
+                }),
+              ),
             ),
-          ),
-        ],
-      ),
+            Expanded(
+                child: Column(
+                    // generate 5 news article items
+                    children: List.generate(5, (index) {
+              return NewsArticleItem();
+            })))
+          ]),
     );
   }
 }
 
 class NewsArticleItem extends StatelessWidget {
-  const NewsArticleItem({super.key});
-
   @override
   Widget build(BuildContext context) {
+    // return a container with margin, padding, border and border radius
     return Container(
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.green[300],
-            radius: 20,
-          ),
+        margin: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(8)),
+        child: Row(children: [
+          // create a circle avatar
+          CircleAvatar(backgroundColor: Colors.green[300], radius: 20),
           const SizedBox(width: 8),
+          // let the text take the remaining space in the row
           const Expanded(
             child: Text('News article title'),
-          ),
-        ],
-      ),
-    );
+          )
+        ]));
   }
 }
