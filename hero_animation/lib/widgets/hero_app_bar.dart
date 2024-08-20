@@ -1,5 +1,8 @@
+// widgets/hero_app_bar.dart
 import 'package:flutter/material.dart';
 
+// PreferredSizeWidget is a mixin that
+// can be used to specify the size of the widget
 class HeroAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HeroAppBar({super.key});
 
@@ -7,6 +10,7 @@ class HeroAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       shape: const RoundedRectangleBorder(
+        // vertical radius of 30 for the bottom of app bar
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(30),
         ),

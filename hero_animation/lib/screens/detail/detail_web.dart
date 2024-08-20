@@ -1,3 +1,4 @@
+// screens/detail/detail_web.dart
 import 'package:flutter/material.dart';
 import 'package:hero_animation/models/Article.dart';
 import 'package:hero_animation/widgets/hero_app_bar.dart';
@@ -10,29 +11,24 @@ class DetailWeb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeroAppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Hero(
+        appBar: HeroAppBar(),
+        body: Center(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Hero(
               tag: article.image,
+              // Display the image in a circular shape
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  article.image,
-                  width: 512,
-                  height: 512,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Text(article.title, style: const TextStyle(fontSize: 24)),
-            const SizedBox(height: 16),
-            Text(article.description, style: const TextStyle(fontSize: 16)),
-          ],
-        ),
-      ),
-    );
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    article.image,
+                    width: 512,
+                    height: 512,
+                    fit: BoxFit.cover,
+                  ))),
+          Text(article.title, style: const TextStyle(fontSize: 24)),
+          const SizedBox(height: 16),
+          Text(article.description, style: const TextStyle(fontSize: 16)),
+        ])));
   }
 }

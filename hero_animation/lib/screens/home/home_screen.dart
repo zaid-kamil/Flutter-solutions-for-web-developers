@@ -1,7 +1,6 @@
+// screens/home/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:hero_animation/models/Article.dart';
-import 'package:hero_animation/screens/home/home_mobile.dart';
-import 'package:hero_animation/screens/home/home_tablet.dart';
 import 'package:hero_animation/screens/home/home_web.dart';
 import 'package:hero_animation/screens/responsive_layout.dart';
 
@@ -18,8 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayout(
-        mobileLayout: HomeMobile(articles: articles),
-        tabletLayout: HomeTablet(articles: articles),
+        mobileLayout: Placeholder(),
+        tabletLayout: Placeholder(),
         webLayout: HomeWeb(articles: articles));
   }
 }
