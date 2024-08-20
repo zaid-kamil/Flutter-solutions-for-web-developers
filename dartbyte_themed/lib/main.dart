@@ -5,17 +5,17 @@ import 'package:dartbyte/utils/db_theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const DartByteThemedApp());
+  runApp(const DartByteApp());
 }
 
-class DartByteThemedApp extends StatefulWidget {
-  const DartByteThemedApp({super.key});
+class DartByteApp extends StatefulWidget {
+  const DartByteApp({super.key});
 
   @override
-  State<DartByteThemedApp> createState() => _DartByteThemedAppState();
+  State<DartByteApp> createState() => _DartByteAppState();
 }
 
-class _DartByteThemedAppState extends State<DartByteThemedApp> {
+class _DartByteAppState extends State<DartByteApp> {
   bool _isDarkTheme = false;
 
   void _toggleTheme() {
@@ -28,7 +28,7 @@ class _DartByteThemedAppState extends State<DartByteThemedApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Dart byte',
-        home: ByteBoard(toggleTheme: _toggleTheme),
+        home: ByteBoardPage(toggleTheme: _toggleTheme),
         theme: CustomTheme.lightTheme,
         darkTheme: CustomTheme.darkTheme,
         themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
@@ -43,10 +43,10 @@ class _DartByteThemedAppState extends State<DartByteThemedApp> {
   }
 }
 
-class ByteBoard extends StatelessWidget {
+class ByteBoardPage extends StatelessWidget {
   final VoidCallback toggleTheme;
 
-  const ByteBoard({super.key, required this.toggleTheme});
+  const ByteBoardPage({super.key, required this.toggleTheme});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class ByteBoard extends StatelessWidget {
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          if (constraints.maxWidth > 1000) {
+          if (constraints.maxWidth > 1200) {
             return const Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +80,7 @@ class ByteBoard extends StatelessWidget {
                     child: Column(
                       children: [
                         TopSlider(),
-                        RecommendNews(),
+                        RecommendedNews(),
                         AllArticleRow(),
                       ],
                     ),
@@ -97,8 +97,80 @@ class ByteBoard extends StatelessWidget {
   }
 }
 
-class RecommendNews extends StatelessWidget {
-  const RecommendNews({
+class TopSlider extends StatelessWidget {
+  const TopSlider({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 400,
+      width: double.infinity,
+      child: Expanded(
+        child: Scrollbar(
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: const [
+              ByteNewsCard("Dart collections", "Noor ul Aman", 1),
+              ByteNewsCard("Web is Amazing", "Zaid Kamil", 2),
+              ByteNewsCard("Responsive Design", "Amna Ghazal", 3),
+              ByteNewsCard("List of Flutter Widgets", "Bharvi Sharma", 4),
+              ByteNewsCard("Learn Dart", "Akbar Ahmad", 5),
+              ByteNewsCard("Learn Dart Collections", "Adeeba Ahmad", 6),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ByteNewsCard extends StatelessWidget {
+  final String title;
+  final String author;
+  final int imgId;
+
+  const ByteNewsCard(this.title, this.author, this.imgId, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Theme.of(context).cardColor,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      elevation: 5,
+      margin: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Image.network(
+            "https://picsum.photos/id/$imgId/500/300",
+            fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 8),
+                Text('by $author',
+                    style: Theme.of(context).textTheme.bodySmall),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class RecommendedNews extends StatelessWidget {
+  const RecommendedNews({
     super.key,
   });
 
@@ -177,78 +249,6 @@ class AllArticleRow extends StatelessWidget {
               children: List.generate(5, (index) {
                 return const NewsArticleItem();
               }),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class TopSlider extends StatelessWidget {
-  const TopSlider({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
-      width: double.infinity,
-      child: Expanded(
-        child: Scrollbar(
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: const [
-              NewsCard("Dart collections", "Noor ul Aman", 1),
-              NewsCard("Web is Amazing", "Zaid Kamil", 2),
-              NewsCard("Responsive Design", "Amna Ghazal", 3),
-              NewsCard("List of Flutter Widgets", "Bharvi Sharma", 4),
-              NewsCard("Learn Dart", "Akbar Ahmad", 5),
-              NewsCard("Learn Dart Collections", "Adeeba Ahmad", 6),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class NewsCard extends StatelessWidget {
-  final String title;
-  final String author;
-  final int imgId;
-
-  const NewsCard(this.title, this.author, this.imgId, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).cardColor,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 5,
-      margin: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Image.network(
-            "https://picsum.photos/id/$imgId/500/300",
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                const SizedBox(height: 8),
-                Text('by $author',
-                    style: Theme.of(context).textTheme.bodySmall),
-              ],
             ),
           ),
         ],
