@@ -8,7 +8,7 @@ UPCOMING BOOK
 - [x] Chapter 3 - Designing Stunning UIs for the Web - Dartbyte
 - [x] Chapter 4 - Advanced UI Design and Animation  - Staggered Menu implementation
 - [x] Chapter 4 - Advanced UI Design and Animation  - Hero Animation implementation
-- [ ] Chapter 4 - Advanced UI Design and Animation  - Dartbyte (Update 1)
+- [x] Chapter 4 - Advanced UI Design and Animation  - Dartbyte (Update 1)
 - [ ] Chapter 5 - Incorporating Machine Learning and AI - Diabetes Classifier
 - [ ] Chapter 5 - Incorporating Machine Learning and AI - House Price Prediction
 - [ ] Chapter 5 - Incorporating Machine Learning and AI - Flower species Clustering 
