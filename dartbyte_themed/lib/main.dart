@@ -281,7 +281,7 @@ class NewsArticleItem extends StatelessWidget {
             CircleAvatar(
               backgroundColor: Colors.primaries.last,
               radius: 20,
-              child: FlutterLogo(size: 20),
+              child: const FlutterLogo(size: 20),
             ),
             const SizedBox(width: 8),
             const Expanded(

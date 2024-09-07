@@ -55,7 +55,7 @@ class ArticleItem extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text('View Article'),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Icon(Icons.arrow_forward_rounded),
                         ],
                       )),

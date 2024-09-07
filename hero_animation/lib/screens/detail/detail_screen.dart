@@ -12,8 +12,8 @@ class DetailScreen extends StatelessWidget {
     final Article article =
         ModalRoute.of(context)?.settings.arguments as Article;
     return ResponsiveLayout(
-      mobileLayout: Placeholder(),
-      tabletLayout: Placeholder(),
+      mobileLayout: const Placeholder(),
+      tabletLayout: const Placeholder(),
       webLayout: DetailWeb(article: article),
     );
   }

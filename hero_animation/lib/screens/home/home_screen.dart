@@ -17,8 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayout(
-        mobileLayout: Placeholder(),
-        tabletLayout: Placeholder(),
+        mobileLayout: const Placeholder(),
+        tabletLayout: const Placeholder(),
         webLayout: HomeWeb(articles: articles));
   }
 }

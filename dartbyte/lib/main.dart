@@ -51,7 +51,7 @@ class ByteBoardPage extends StatelessWidget {
             builder: (BuildContext context, BoxConstraints constraints) {
           // check if the width is greater than 1200
           if (constraints.maxWidth > 1200) {
-            return Row(
+            return const Row(
                 // mainAxisSize set to max to take full width
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -79,6 +79,8 @@ class ByteBoardPage extends StatelessWidget {
 }
 
 class TopSlider extends StatelessWidget {
+  const TopSlider({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -141,6 +143,8 @@ class ByteNewsCard extends StatelessWidget {
 }
 
 class RecommendedNews extends StatelessWidget {
+  const RecommendedNews({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -186,6 +190,8 @@ class RecommendedNews extends StatelessWidget {
 }
 
 class AllArticleRow extends StatelessWidget {
+  const AllArticleRow({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -199,7 +205,7 @@ class AllArticleRow extends StatelessWidget {
               child: Column(
                 // generate 6 news article items
                 children: List.generate(6, (index) {
-                  return NewsArticleItem();
+                  return const NewsArticleItem();
                 }),
               ),
             ),
@@ -207,7 +213,7 @@ class AllArticleRow extends StatelessWidget {
                 child: Column(
                     // generate 5 news article items
                     children: List.generate(5, (index) {
-              return NewsArticleItem();
+              return const NewsArticleItem();
             })))
           ]),
     );
@@ -215,6 +221,8 @@ class AllArticleRow extends StatelessWidget {
 }
 
 class NewsArticleItem extends StatelessWidget {
+  const NewsArticleItem({super.key});
+
   @override
   Widget build(BuildContext context) {
     // return a container with margin, padding, border and border radius

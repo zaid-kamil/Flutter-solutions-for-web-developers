@@ -13,7 +13,7 @@ class HomeWeb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: HeroAppBar(),
+        appBar: const HeroAppBar(),
         body: Row(children: [
           // create an empty container on left side
           Expanded(child: Container()),
