@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:house_price_prediction_app/screens/home/home_web.dart';
 
 import '../responsive_layout.dart';
+import 'hpp_web.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HppScreen extends StatelessWidget {
+  const HppScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const ResponsiveLayout(
-      webLayout: HomeWeb(),
+      webLayout: HppWeb(),
       mobileLayout: Placeholder(),
       tabletLayout: Placeholder(),
     );

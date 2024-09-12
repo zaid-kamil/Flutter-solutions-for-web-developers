@@ -1,3 +1,4 @@
+// main.dart
 import 'package:diabetes_classifier_app/screens/prediction/prediction_screen.dart';
 import 'package:flutter/material.dart';
 

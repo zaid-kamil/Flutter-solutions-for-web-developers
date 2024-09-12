@@ -1,3 +1,4 @@
+// screens/prediction/prediction_web.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -12,43 +13,30 @@ class PredictionWeb extends StatefulWidget {
 }
 
 class _PredictionWebState extends State<PredictionWeb> {
-  // variables for training the model
   Map<String, double> trainResult = {};
-
-  // variables for making predictions
   String? prediction;
   final _formKey = GlobalKey<FormBuilderState>();
 
-  void _submitForm() {
+  void submitForm() {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
-      print('Form is valid');
-      print(_formKey.currentState?.value);
-      var formData = _formKey.currentState?.value;
-
-      makePrediction(formData!).then((value) {
+      final formData = _formKey.currentState!.value;
+      makePrediction(formData).then((value) {
         setState(() {
-          if (value == '1') {
-            prediction = 'Diabetes detected';
-          } else {
-            prediction = 'No diabetes detected';
-          }
+          prediction =
+              value == '1' ? 'Diabetes detected' : 'No diabetes detected';
         });
       });
     }
   }
 
-  void _resetForm() {
+  void resetForm() {
     _formKey.currentState?.reset();
-    setState(() {
-      prediction = null;
-    });
+    setState(() => prediction = null);
   }
 
-  Future<void> _trainDiabetesModel() async {
-    Map<String, double> result = await trainModel();
-    setState(() {
-      trainResult = result;
-    });
+  Future<void> trainDiabetesModel() async {
+    final result = await trainModel();
+    setState(() => trainResult = result);
   }
 
   @override
@@ -63,117 +51,26 @@ class _PredictionWebState extends State<PredictionWeb> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                Colors.purple,
-                Colors.deepPurpleAccent,
-              ],
+              colors: [Colors.purple, Colors.deepPurpleAccent],
             ),
           ),
         ),
       ),
       body: Stack(
         children: [
-          Image.asset(
-            "images/bg.png",
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-            colorBlendMode: BlendMode.modulate,
-            color: Colors.purple.withOpacity(0.1),
-          ),
+          buildBackground(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
                 child: DiabetesPredictionForm(
                   formKey: _formKey,
-                  submitForm: _submitForm,
-                  resetForm: _resetForm,
+                  submitForm: submitForm,
+                  resetForm: resetForm,
                 ),
               ),
               Expanded(
-                child: FractionallySizedBox(
-                  heightFactor: .75,
-                  widthFactor: .90,
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(32.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 1,
-                          ),
-                          color: Colors.white.withAlpha(250),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            OutlinedButton.icon(
-                              icon: const Icon(Icons.refresh_rounded),
-                              onPressed: _trainDiabetesModel,
-                              label: const Text('Train Model'),
-                            ),
-                            const Text("Train the model to make predictions",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w100,
-                                )),
-                            const SizedBox(height: 20),
-                            trainResult.isEmpty
-                                ? const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('Train the model to get metrics'),
-                                    ],
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Accuracy: ${trainResult['accuracy']?.toStringAsFixed(2)}",
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        "Recall: ${trainResult['recall']?.toStringAsFixed(2)}",
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        "Precision: ${trainResult['precision']?.toStringAsFixed(2)}",
-                                      ),
-                                    ],
-                                  )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Expanded(
-                        child: AnimatedContainer(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(32.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                            color: switchColor(prediction),
-                          ),
-                          duration: const Duration(seconds: 1),
-                          child: Center(
-                            child: Text(
-                              prediction != null
-                                  ? prediction!
-                                  : 'Prediction will appear here',
-                              style: const TextStyle(fontSize: 50),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: buildRightPanel(),
               ),
             ],
           )
@@ -182,7 +79,96 @@ class _PredictionWebState extends State<PredictionWeb> {
     );
   }
 
-  switchColor(String? prediction) {
+  Widget buildBackground() {
+    return Image.asset(
+      "images/bg.png",
+      fit: BoxFit.cover,
+      height: double.infinity,
+      width: double.infinity,
+      colorBlendMode: BlendMode.modulate,
+      color: Colors.purple.withOpacity(0.1),
+    );
+  }
+
+  Widget buildRightPanel() {
+    return FractionallySizedBox(
+      heightFactor: .75,
+      widthFactor: .90,
+      child: Column(
+        children: [
+          buildTrainingSection(),
+          const SizedBox(height: 20),
+          buildPredictionDisplay(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTrainingSection() {
+    return Container(
+      padding: const EdgeInsets.all(32.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        color: Colors.white.withAlpha(250),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          OutlinedButton.icon(
+            icon: const Icon(Icons.refresh_rounded),
+            onPressed: trainDiabetesModel,
+            label: const Text('Train Model'),
+          ),
+          const Text(
+            "Train the model to make predictions",
+            style: TextStyle(fontSize: 10, fontWeight: FontWeight.w100),
+          ),
+          const SizedBox(height: 20),
+          buildTrainingMetrics(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTrainingMetrics() {
+    if (trainResult.isEmpty) {
+      return const Text('Train the model to get metrics');
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Accuracy: ${trainResult['accuracy']?.toStringAsFixed(2)}"),
+        const SizedBox(width: 10),
+        Text("Recall: ${trainResult['recall']?.toStringAsFixed(2)}"),
+        const SizedBox(width: 10),
+        Text("Precision: ${trainResult['precision']?.toStringAsFixed(2)}"),
+      ],
+    );
+  }
+
+  Widget buildPredictionDisplay() {
+    return Expanded(
+      child: AnimatedContainer(
+        width: double.infinity,
+        padding: const EdgeInsets.all(32.0),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.circular(10),
+          color: getPredictionColor(),
+        ),
+        duration: const Duration(seconds: 1),
+        child: Center(
+          child: Text(
+            prediction ?? 'Prediction will appear here',
+            style: const TextStyle(fontSize: 25),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color getPredictionColor() {
     if (prediction == 'Diabetes detected') {
       return Colors.red.withAlpha(200);
     } else if (prediction == 'No diabetes detected') {
@@ -207,16 +193,13 @@ class DiabetesPredictionForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var gapBwInput = 20.0;
+    const gapBwInput = 20.0;
     return FractionallySizedBox(
       heightFactor: .75,
       widthFactor: .90,
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey,
-            width: 1,
-          ),
+          border: Border.all(color: Colors.grey),
           color: Colors.white.withAlpha(250),
           borderRadius: BorderRadius.circular(10),
         ),
@@ -227,136 +210,90 @@ class DiabetesPredictionForm extends StatelessWidget {
               key: formKey,
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Enter details of the patient',
                     style: TextStyle(
                       fontSize: gapBwInput,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: gapBwInput),
-                  FormBuilderTextField(
-                    name: 'Pregnancies',
-                    decoration: const InputDecoration(
-                      labelText: 'Number of Pregnancies',
-                      icon: Icon(Icons.numbers_outlined),
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.numeric(),
-                    ]),
-                  ),
-                  SizedBox(height: gapBwInput),
-                  FormBuilderTextField(
-                    name: 'Glucose',
-                    decoration: const InputDecoration(
-                      labelText: 'Oral Glucose Level (mg/dL)',
-                      icon: Icon(Icons.local_hospital_outlined),
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.numeric(),
-                    ]),
-                  ),
-                  SizedBox(height: gapBwInput),
-                  FormBuilderTextField(
-                    name: 'BloodPressure',
-                    decoration: const InputDecoration(
-                      labelText: 'Blood Pressure (mm Hg)',
-                      icon: Icon(Icons.medical_services_outlined),
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.numeric(),
-                    ]),
-                  ),
-                  SizedBox(height: gapBwInput),
-                  FormBuilderTextField(
-                    name: 'SkinThickness',
-                    decoration: const InputDecoration(
-                      labelText: 'Triceps Skin Thickness (mm)',
-                      icon: Icon(Icons.person_outline),
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.numeric(),
-                    ]),
-                  ),
-                  SizedBox(height: gapBwInput),
-                  FormBuilderTextField(
-                    name: 'Insulin',
-                    decoration: const InputDecoration(
-                      labelText: 'Insulin Level (mu U/ml)',
-                      icon: Icon(Icons.medical_services_outlined),
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.numeric(),
-                    ]),
-                  ),
-                  SizedBox(height: gapBwInput),
-                  FormBuilderTextField(
-                    name: 'BMI',
-                    decoration: const InputDecoration(
-                      labelText: 'Body Mass Index (BMI)',
-                      icon: Icon(Icons.monitor_weight_outlined),
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.numeric(),
-                    ]),
-                  ),
-                  SizedBox(height: gapBwInput),
-                  FormBuilderTextField(
-                    name: 'DiabetesPedigreeFunction',
-                    decoration: const InputDecoration(
-                      labelText:
-                          'Diabetes Pedigree (History of Diabetes in Family)',
-                      hintText: "Enter 0 or 1 only",
-                      icon: Icon(Icons.monitor_weight_outlined),
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.numeric(),
-                      FormBuilderValidators.max(3),
-                      FormBuilderValidators.min(0),
-                    ]),
-                  ),
-                  SizedBox(height: gapBwInput),
-                  FormBuilderTextField(
-                    name: 'Age',
-                    decoration: const InputDecoration(
-                      labelText: 'Age of the patient',
-                      icon: Icon(Icons.person_outline),
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.numeric(),
-                    ]),
-                  ),
-                  SizedBox(height: gapBwInput),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton.icon(
-                        icon: const Icon(Icons.clear),
-                        onPressed: resetForm,
-                        label: const Text(
-                          'Reset',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      FilledButton.icon(
-                        icon: const Icon(Icons.check),
-                        onPressed: submitForm,
-                        label: const Text(
-                          'Predict',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: gapBwInput),
+                  const SizedBox(height: gapBwInput),
+                  buildFormFields(),
+                  const SizedBox(height: gapBwInput),
+                  buildFormButtons(),
+                  const SizedBox(height: gapBwInput),
                 ],
-                // ),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildFormFields() {
+    return Column(
+      children: [
+        buildTextField(
+            'Pregnancies', 'Number of Pregnancies', Icons.numbers_outlined),
+        buildTextField('Glucose', 'Oral Glucose Level (mg/dL)',
+            Icons.local_hospital_outlined),
+        buildTextField('BloodPressure', 'Blood Pressure (mm Hg)',
+            Icons.medical_services_outlined),
+        buildTextField('SkinThickness', 'Triceps Skin Thickness (mm)',
+            Icons.person_outline),
+        buildTextField('Insulin', 'Insulin Level (mu U/ml)',
+            Icons.medical_services_outlined),
+        buildTextField(
+            'BMI', 'Body Mass Index (BMI)', Icons.monitor_weight_outlined),
+        buildTextField(
+            'DiabetesPedigreeFunction',
+            'Diabetes Pedigree (History of Diabetes in Family)',
+            Icons.monitor_weight_outlined,
+            hintText: "Enter 0 or 1 only"),
+        buildTextField('Age', 'Age of the patient', Icons.person_outline),
+      ],
+    );
+  }
+
+  Widget buildTextField(String name, String label, IconData icon,
+      {String? hintText}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: FormBuilderTextField(
+        name: name,
+        decoration: InputDecoration(
+          labelText: label,
+          icon: Icon(icon),
+          hintText: hintText,
+        ),
+        validator: FormBuilderValidators.compose([
+          FormBuilderValidators.numeric(),
+          if (name == 'DiabetesPedigreeFunction') ...[
+            FormBuilderValidators.max(3),
+            FormBuilderValidators.min(0),
+          ],
+        ]),
+      ),
+    );
+  }
+
+  Widget buildFormButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        OutlinedButton.icon(
+          icon: const Icon(Icons.clear),
+          onPressed: resetForm,
+          label: const Text('Reset', style: TextStyle(fontSize: 18)),
+        ),
+        const SizedBox(width: 10),
+        FilledButton.icon(
+          icon: const Icon(Icons.check),
+          onPressed: submitForm,
+          label: const Text('Predict', style: TextStyle(fontSize: 18)),
+        ),
+      ],
     );
   }
 }

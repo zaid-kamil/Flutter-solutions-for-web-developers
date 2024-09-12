@@ -10,10 +10,10 @@ UPCOMING BOOK
 - [x] Chapter 4 - Advanced UI Design and Animation  - Hero Animation implementation
 - [x] Chapter 4 - Advanced UI Design and Animation  - Dartbyte (Update 1)
 - [x] Chapter 5 - Incorporating Machine Learning and AI - Diabetes Classifier
-- [ ] Chapter 5 - Incorporating Machine Learning and AI - House Price Prediction
-- [ ] Chapter 5 - Incorporating Machine Learning and AI - Flower species Clustering 
-- [ ] Chapter 5 - Incorporating Machine Learning and AI - Creating a chatbot
-- [ ] Chapter 5 - Incorporating Machine Learning and AI - Image Recognition
+- [x] Chapter 5 - Incorporating Machine Learning and AI - House Price Prediction
+- [x] Chapter 5 - Incorporating Machine Learning and AI - Flower species Clustering 
+- [x] Chapter 5 - Incorporating Machine Learning and AI - Creating a chatbot
+- [x] Chapter 5 - Incorporating Machine Learning and AI - Image Recognition
 - [ ] Chapter 6 - Effective Debugging Techniques - Dartbyte (Update 2)
 - [ ] Chapter 7 - Building Versatile Architectures and Integrating Firebase - Firebase Authentication to DartByte 
 - [ ] Chapter 7 - Building Versatile Architectures and Integrating Firebase - Firebase Database to DartByte

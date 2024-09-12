@@ -1,20 +1,21 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:house_price_prediction_app/screens/home/home_screen.dart';
+
+import 'screens/price_prediction/hpp_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const HousePricePredictionApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class HousePricePredictionApp extends StatelessWidget {
+  const HousePricePredictionApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'House Price Prediction App',
-      home: const HomeScreen(),
+      home: const HppScreen(),
       debugShowCheckedModeBanner: false,
       theme: const CupertinoThemeData(
         brightness: Brightness.light,

@@ -1,3 +1,4 @@
+// screens/price_prediction/hpp_web.dart
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -5,85 +6,81 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_cupertino_fields/form_builder_cupertino_fields.dart';
 import 'package:tflite_web/tflite_web.dart';
 
-class HomeWeb extends StatefulWidget {
-  const HomeWeb({super.key});
+class HppWeb extends StatefulWidget {
+  const HppWeb({super.key});
 
   @override
-  State<HomeWeb> createState() => _HomeWebState();
+  State<HppWeb> createState() => _HppWebState();
 }
 
-class _HomeWebState extends State<HomeWeb> {
-  TFLiteModel? _tfLieModel;
-  String? _housePrice;
+class _HppWebState extends State<HppWeb> {
+  TFLiteModel? tfLiteModel;
+  String? housePrice;
   bool isModelLoaded = false;
-  final _formKey = GlobalKey<FormBuilderState>();
+  final formKey = GlobalKey<FormBuilderState>();
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
-      TFLiteWeb.initialize().then((value) async {
-        // Load the TFLite model from the /web/models directory
-        _tfLieModel = await TFLiteModel.fromUrl(
-          '/models/house_price_model.tflite',
-        );
-        setState(() {
-          // Set the model output to the model's name
-          isModelLoaded = true;
-        });
-      }).catchError((e) {
-        throw Exception('Failed to initialize TFLite: $e');
-      });
-    });
+    initializeTFLite();
   }
 
-  Future<void> _predictHousePrice() async {
-    print(_formKey.currentState!.value);
-    final houseData = _formKey.currentState!.value;
-
-    var inputs = [
-      houseData['bedrooms'] as double,
-      houseData['bathrooms'] as double,
-      houseData['sqft_living'] as double,
-      houseData['floors'] as double,
-      houseData['condition'] as double,
-    ];
-    var minMaxScale = _minMaxScale(inputs);
-    var inputTensor =
-        createTensor(minMaxScale, shape: [1, 5], type: TFLiteDataType.float32);
-
-    // Make a prediction
-    final prediction =
-        await _tfLieModel!.predict<NamedTensorMap>([inputTensor]);
-    // regex to extract the prediction value
-    final parts = prediction
-        .toString()
-        .split(RegExp(r'\[\[|\],\]')); // Split by `[[` or `],]`
-    if (parts.length > 1) {
-      final result = parts[1].trim(); // Extract the second part
-      setState(() {
-        _housePrice =
-            inverseLogTransform(double.parse(result)).toStringAsFixed(2);
-      });
-    } else {
-      print('Prediction failed');
+  Future<void> initializeTFLite() async {
+    try {
+      await TFLiteWeb.initialize();
+      tfLiteModel =
+          await TFLiteModel.fromUrl('/models/house_price_model.tflite');
+      setState(() => isModelLoaded = true);
+    } catch (e) {
+      print('Failed to initialize TFLite: $e');
     }
-    // Set the model output to the prediction
   }
 
-  List<double> _minMaxScale(List<double> data) {
-    // Min-max scaling of the features
-    List<double> maxValues = [33.0, 8.0, 12050.0, 3.5, 13.0];
-    List<double> minValues = [0.0, 0.0, 290.0, 1.0, 1.0];
-    return List.generate(data.length, (i) {
-      return (data[i] - minValues[i]) / (maxValues[i] - minValues[i]);
-    });
+  Future<void> predictHousePrice() async {
+    if (!isModelLoaded) return;
+
+    final houseData = formKey.currentState!.value;
+    final inputs = [
+      houseData['bedrooms'],
+      houseData['bathrooms'],
+      houseData['sqft_living'],
+      houseData['floors'],
+      houseData['condition'],
+    ].map((e) => e as double).toList();
+
+    final scaledInputs = minMaxScale(inputs);
+    final inputTensor =
+        createTensor(scaledInputs, shape: [1, 5], type: TFLiteDataType.float32);
+
+    try {
+      final prediction =
+          tfLiteModel!.predict<NamedTensorMap>([inputTensor]);
+      final result = extractPrediction(prediction);
+      setState(
+          () => housePrice = inverseLogTransform(result).toStringAsFixed(2));
+    } catch (e) {
+      print('Prediction failed: $e');
+    }
   }
 
-  double inverseLogTransform(double value) {
-    // Inverse log transformation of the predicted value
-    return exp(value) - 1;
+  List<double> minMaxScale(List<double> data) {
+    const maxValues = [33.0, 8.0, 12050.0, 3.5, 13.0];
+    const minValues = [0.0, 0.0, 290.0, 1.0, 1.0];
+    return List.generate(data.length,
+        (i) => (data[i] - minValues[i]) / (maxValues[i] - minValues[i]));
   }
+
+  double extractPrediction(NamedTensorMap prediction) {
+    final parts = prediction.toString().split(RegExp(r'\[\[|\],\]'));
+    if (parts.length > 1) {
+      return double.parse(parts[1].trim());
+    }
+    throw Exception('Invalid prediction format');
+  }
+
+  double inverseLogTransform(double value) => exp(value) - 1;
+
+  void resetPrediction() => setState(() => housePrice = null);
 
   @override
   Widget build(BuildContext context) {
@@ -95,102 +92,12 @@ class _HomeWebState extends State<HomeWeb> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    'Welcome to the House Price Prediction App',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                if (isModelLoaded)
-                  const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      'Neural Network Model Loaded Successfully!',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: CupertinoColors.systemGreen,
-                      ),
-                    ),
-                  )
-                else
-                  const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        CupertinoActivityIndicator(),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Loading Model...',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: CupertinoColors.systemPink,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                PredictionsForm(
-                  formKey: _formKey,
-                ),
+                buildHeader(),
+                buildModelStatus(),
+                PredictionsForm(formKey: formKey),
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CupertinoButton.filled(
-                      onPressed: () {
-                        if (isModelLoaded) {
-                          _formKey.currentState!.save();
-                          _predictHousePrice();
-                        }
-                      },
-                      child: const Text('Predict House Price'),
-                    ),
-                    const SizedBox(width: 16),
-                    CupertinoButton(
-                      color: CupertinoColors.systemRed,
-                      child: const Text("Clear"),
-                      onPressed: () {
-                        setState(
-                          () {
-                            _housePrice = null;
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: AnimatedCrossFade(
-                    duration: const Duration(milliseconds: 100),
-                    firstChild: const Text(
-                      'Click the button to predict the house price',
-                    ),
-                    secondChild: Column(
-                      children: [
-                        const Text(
-                          'The predicted house price is',
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "\$$_housePrice",
-                          style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: CupertinoColors.systemGreen,
-                          ),
-                        ),
-                      ],
-                    ),
-                    crossFadeState: _housePrice == null
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
-                  ),
-                ),
+                buildButtons(),
+                buildPredictionDisplay(),
               ],
             ),
           ),
@@ -198,13 +105,96 @@ class _HomeWebState extends State<HomeWeb> {
       ),
     );
   }
+
+  Widget buildHeader() {
+    return const Padding(
+      padding: EdgeInsets.all(16),
+      child: Text(
+        'Welcome to the House Price Prediction App',
+        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget buildModelStatus() {
+    return isModelLoaded
+        ? const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text(
+              'Neural Network Model Loaded Successfully!',
+              style:
+                  TextStyle(fontSize: 16, color: CupertinoColors.systemGreen),
+            ),
+          )
+        : const Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                CupertinoActivityIndicator(),
+                SizedBox(height: 16),
+                Text(
+                  'Loading Model...',
+                  style: TextStyle(
+                      fontSize: 16, color: CupertinoColors.systemPink),
+                ),
+              ],
+            ),
+          );
+  }
+
+  Widget buildButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CupertinoButton.filled(
+          onPressed: isModelLoaded
+              ? () {
+                  formKey.currentState!.save();
+                  predictHousePrice();
+                }
+              : null,
+          child: const Text('Predict House Price'),
+        ),
+        const SizedBox(width: 16),
+        CupertinoButton(
+          color: CupertinoColors.systemRed,
+          onPressed: resetPrediction,
+          child: const Text("Clear"),
+        ),
+      ],
+    );
+  }
+
+  Widget buildPredictionDisplay() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: AnimatedCrossFade(
+        duration: const Duration(milliseconds: 100),
+        firstChild: const Text('Click the button to predict the house price'),
+        secondChild: Column(
+          children: [
+            const Text('The predicted house price is'),
+            const SizedBox(height: 8),
+            Text(
+              "\$$housePrice",
+              style: const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: CupertinoColors.systemGreen,
+              ),
+            ),
+          ],
+        ),
+        crossFadeState: housePrice == null
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+      ),
+    );
+  }
 }
 
 class PredictionsForm extends StatelessWidget {
-  const PredictionsForm({
-    Key? key,
-    required this.formKey,
-  }) : super(key: key);
+  const PredictionsForm({super.key, required this.formKey});
 
   final GlobalKey<FormBuilderState> formKey;
 
@@ -214,48 +204,26 @@ class PredictionsForm extends StatelessWidget {
       key: formKey,
       child: Column(
         children: [
-          //   sliders for features: 'bedrooms', 'bathrooms', 'sqft_living', 'floors', 'condition'
-          FormBuilderCupertinoSlider(
-            name: 'bedrooms',
-            min: 0,
-            max: 30,
-            initialValue: 4,
-            divisions: 30,
-            valueWidget: (value) => Text("${value} bedrooms"),
-          ),
-          FormBuilderCupertinoSlider(
-            name: 'bathrooms',
-            min: 0,
-            max: 8,
-            initialValue: 3,
-            divisions: 8,
-            valueWidget: (value) => Text("${value} bathrooms"),
-          ),
-          FormBuilderCupertinoSlider(
-            name: 'sqft_living',
-            min: 290,
-            max: 12050,
-            initialValue: 5420,
-            valueWidget: (value) => Text("${value} sqft"),
-          ),
-          FormBuilderCupertinoSlider(
-            name: 'floors',
-            min: 1,
-            max: 5,
-            initialValue: 1,
-            divisions: 4,
-            valueWidget: (value) => Text("${value} floors"),
-          ),
-          FormBuilderCupertinoSlider(
-            name: 'condition',
-            min: 1,
-            max: 13,
-            initialValue: 11,
-            divisions: 12,
-            valueWidget: (value) => Text("Condition: ${value}"),
-          ),
+          buildSlider('bedrooms', 0, 30, 4, "bedrooms"),
+          buildSlider('bathrooms', 0, 8, 3, "bathrooms"),
+          buildSlider('sqft_living', 290, 12050, 5420, "sqft"),
+          buildSlider('floors', 1, 5, 1, "floors", divisions: 4),
+          buildSlider('condition', 1, 13, 11, "Condition: ", divisions: 12),
         ],
       ),
+    );
+  }
+
+  Widget buildSlider(
+      String name, double min, double max, double initialValue, String label,
+      {int? divisions}) {
+    return FormBuilderCupertinoSlider(
+      name: name,
+      min: min,
+      max: max,
+      initialValue: initialValue,
+      divisions: divisions,
+      valueWidget: (value) => Text("$value $label"),
     );
   }
 }
