@@ -14,8 +14,7 @@ UPCOMING BOOK
 - [x] Chapter 5 - Incorporating Machine Learning and AI - Flower species Clustering 
 - [x] Chapter 5 - Incorporating Machine Learning and AI - Creating a chatbot
 - [x] Chapter 5 - Incorporating Machine Learning and AI - Image Recognition
-- [ ] Chapter 6 - Effective Debugging Techniques - Dartbyte (Update 2)
-- [ ] Chapter 7 - Building Versatile Architectures and Integrating Firebase - Firebase Authentication to DartByte 
-- [ ] Chapter 7 - Building Versatile Architectures and Integrating Firebase - Firebase Database to DartByte
+- [x] Chapter 6 - Effective Debugging Techniques - Dartbyte (Update 2)
+- [x] Chapter 7 - Building Versatile Architectures and Integrating Firebase - Visionary App
 - [ ] Chapter 8 - Performance Optimization Strategies
 
