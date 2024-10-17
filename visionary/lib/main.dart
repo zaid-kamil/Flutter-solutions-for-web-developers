@@ -2,11 +2,15 @@ import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:visionary/providers/board_provider.dart';
+import 'package:visionary/providers/login_provider.dart';
+import 'package:visionary/providers/manage_item_provider.dart';
 import 'package:visionary/screens/auth/login_screen.dart';
 
 import 'firebase_options.dart';
-import 'screens/dashboard/vision_board_screen.dart';
-import 'screens/manage/manage_item_screen.dart';
+import 'screens/dashboard/board_screen.dart';
+import 'screens/manage/manage_screen.dart';
 import 'utils/constants.dart';
 
 Future<void> main() async {
@@ -14,7 +18,14 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const VisionaryApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => LoginProvider()),
+      ChangeNotifierProvider(create: (context) => BoardProvider()),
+      ChangeNotifierProvider(create: (context) => ManageItemProvider()),
+    ],
+    child: const VisionaryApp(),
+  ));
 }
 
 class VisionaryApp extends StatelessWidget {
@@ -31,7 +42,7 @@ class VisionaryApp extends StatelessWidget {
       routes: {
         Constants.loginScreen: (context) => const LoginScreen(),
         Constants.visionBoardScreen: (context) => const VisionBoardScreen(),
-        Constants.addEditItemScreen: (context) => const ManageItemScreen(),
+        Constants.addEditItemScreen: (context) => const ManageScreen(),
       },
       debugShowCheckedModeBanner: false,
       scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {
