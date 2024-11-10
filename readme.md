@@ -16,5 +16,5 @@ UPCOMING BOOK
 - [x] Chapter 5 - Incorporating Machine Learning and AI - Image Recognition
 - [x] Chapter 6 - Effective Debugging Techniques - Dartbyte (Update 2)
 - [x] Chapter 7 - Building Versatile Architectures and Integrating Firebase - Visionary App
-- [ ] Chapter 8 - Performance Optimization Strategies
+- [x] Chapter 8 - Performance Optimization Strategies - Laggy Social App
 
