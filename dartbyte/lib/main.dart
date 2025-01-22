@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'dart:math';
 import 'dart:ui';
 
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 void main() {
   // run the DartByteApp widget
   runApp(const DartByteApp());
+  developer.log("TopSlider");
 }
 
 class DartByteApp extends StatelessWidget {
@@ -52,24 +54,25 @@ class ByteBoardPage extends StatelessWidget {
           // check if the width is greater than 1200
           if (constraints.maxWidth > 1200) {
             return const Row(
-                // mainAxisSize set to max to take full width
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // create a fixed width container in the center
-                  SizedBox(
-                      width: 1200,
-                      // SingleChildScrollView to make the content scrollable
-                      child: SingleChildScrollView(
-                          child: Column(
-                              // the 3 sections of the page
-                              children: [
-                            TopSlider(),
-                            RecommendedNews(),
-                            AllArticleRow(),
-                          ])))
-                ]);
+              // mainAxisSize set to max to take full width
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // create a fixed width container in the center
+                SizedBox(
+                    width: 1200,
+                    // SingleChildScrollView to make the content scrollable
+                    child: SingleChildScrollView(
+                        child: Column(
+                            // the 3 sections of the page
+                            children: [
+                          TopSlider(),
+                          RecommendedNews(),
+                          AllArticleRow(),
+                        ])))
+              ],
+            );
           } else {
             // if the width is less than 1200, return a placeholder
             return const Placeholder();
@@ -84,23 +87,27 @@ class TopSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        // sets the height of the slider
-        height: 400,
-        width: double.infinity,
-        child: Expanded(
-            child: Scrollbar(
-                // horizontal scroll view
-                child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    // NewsCard widget is used to display the news
-                    children: const [
+      // sets the height of the slider
+      height: 400,
+      width: double.infinity,
+      child: Expanded(
+        child: Scrollbar(
+          // horizontal scroll view
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            // NewsCard widget is used to display the news
+            children: const [
               ByteNewsCard("Dart collections", "Noor ul Aman", 1),
               ByteNewsCard("Web is Amazing", "Zaid Kamil", 2),
               ByteNewsCard("Responsive Design", "Amna Ghazal", 3),
               ByteNewsCard("List of Flutter Widgets", "Bharvi Sharma", 4),
               ByteNewsCard("Learn Dart", "Akbar Ahmad", 5),
               ByteNewsCard("Learn Dart", "Adeeba Ahmad", 6),
-            ]))));
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
