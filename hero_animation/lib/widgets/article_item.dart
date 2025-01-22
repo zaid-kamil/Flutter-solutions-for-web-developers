@@ -1,6 +1,6 @@
 // widgets/article_item.dart
 import 'package:flutter/material.dart';
-import 'package:hero_animation/models/Article.dart';
+import 'package:hero_animation/models/article.dart';
 
 class ArticleItem extends StatelessWidget {
   final Article article;

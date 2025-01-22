@@ -1,14 +1,16 @@
-// models/Article.dart
+// models/article.dart
 class Article {
   final String title;
   final String image;
   final String description;
+
   // constructor
   Article({
     required this.title,
     required this.image,
     required this.description,
   });
+
   // Add a static method to fetch all articles
   static List<Article> fetchAll() {
     // return a list of articles

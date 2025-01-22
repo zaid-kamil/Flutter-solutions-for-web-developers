@@ -1,6 +1,6 @@
 // screens/detail/detail_web.dart
 import 'package:flutter/material.dart';
-import 'package:hero_animation/models/Article.dart';
+import 'package:hero_animation/models/article.dart';
 import 'package:hero_animation/widgets/hero_app_bar.dart';
 
 class DetailWeb extends StatelessWidget {

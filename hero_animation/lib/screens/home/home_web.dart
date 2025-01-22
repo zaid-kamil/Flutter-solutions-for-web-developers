@@ -1,6 +1,6 @@
 // screens/home/home_web.dart
 import 'package:flutter/material.dart';
-import 'package:hero_animation/models/Article.dart';
+import 'package:hero_animation/models/article.dart';
 
 import '../../widgets/article_item.dart';
 import '../../widgets/hero_app_bar.dart';

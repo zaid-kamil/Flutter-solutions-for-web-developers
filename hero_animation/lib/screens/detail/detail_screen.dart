@@ -1,6 +1,6 @@
 // screens/detail/detail_screen.dart
 import 'package:flutter/material.dart';
-import 'package:hero_animation/models/Article.dart';
+import 'package:hero_animation/models/article.dart';
 import 'package:hero_animation/screens/detail/detail_web.dart';
 import 'package:hero_animation/screens/responsive_layout.dart';
 
