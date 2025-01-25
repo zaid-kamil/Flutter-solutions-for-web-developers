@@ -263,7 +263,7 @@ class NewsArticleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).cardColor.withOpacity(0.6),
+      color: Theme.of(context).cardColor.withValues(alpha: 0.6),
       elevation: 1,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

@@ -2,9 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:visionary_project/constants.dart';
-import 'package:visionary_project/screens/auth_screen.dart';
-import 'package:visionary_project/screens/board_screen.dart';
+import 'package:visionary_project/core/constants.dart';
+import 'package:visionary_project/pages/auth_screen.dart';
+import 'package:visionary_project/pages/board_screen.dart';
 
 import 'firebase_options.dart';
 
@@ -37,8 +37,6 @@ class VisionaryApp extends StatelessWidget {
         Constants.authScreen: (context) => const AuthScreen(),
         // Route for the board screen
         Constants.boardScreen: (context) => const BoardScreen(),
-        // Route for the manage screen (placeholder)
-        Constants.manageScreen: (context) => const Placeholder(),
       },
       debugShowCheckedModeBanner: false,
       // Custom scroll behavior to support touch, mouse, and unknown devices

@@ -1,10 +1,11 @@
-// lib/auth_screen.dart
+// lib/pages/auth_screen.dart
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:visionary_project/constants.dart';
-import 'package:visionary_project/core/vision_provider.dart';
+import 'package:visionary_project/core/constants.dart';
+import 'package:visionary_project/providers/auth_provider.dart';
+import 'package:visionary_project/states/auth_state.dart';
 
 /// A screen that handles user authentication
 class AuthScreen extends ConsumerStatefulWidget {

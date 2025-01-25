@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:visionary_project/constants.dart';
-import 'package:visionary_project/core/vision_item.dart';
+import 'package:visionary_project/core/constants.dart';
+import 'package:visionary_project/models/vision_item.dart';
 
 /// A card widget that displays a vision item
 class VisionItemCard extends StatelessWidget {

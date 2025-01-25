@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:visionary_project/constants.dart';
+import 'package:visionary_project/core/constants.dart';
 
 /// A form widget for adding or editing a vision item
 class AddItemForm extends StatelessWidget {
