@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:visionary_project/core/constants.dart';
 import 'package:visionary_project/providers/auth_provider.dart';
 import 'package:visionary_project/states/auth_state.dart';
+import 'package:visionary_project/widgets/bg_image.dart';
 
 /// A screen that handles user authentication
 class AuthScreen extends ConsumerStatefulWidget {
@@ -21,6 +22,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   @override
   void initState() {
     super.initState();
+    // The addPostFrameCallback() method is used to execute a callback after the frame has been rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // read the authProvider.notifier and call the checkLoginStatus() method
       ref.read(authProvider.notifier).checkLoginStatus();
@@ -45,24 +47,42 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     });
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              Constants.appTitle,
-              style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            OutlinedButton.icon(
-              // read the authProvider.notifier and call the signIn() method
-              onPressed: () => ref.read(authProvider.notifier).signIn(),
-              icon: const Icon(FontAwesomeIcons.google),
-              label: const Text('Sign in with Google'),
-            ),
-          ],
+        body: Stack(
+      children: [
+        BackgroundImage(),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                Constants.appTitle,
+                style: TextStyle(
+                    fontSize: 77,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 10.0,
+                        color: Colors.black,
+                        offset: Offset(5.0, 5.0),
+                      ),
+                    ]),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                // Read the authProvider.notifier and call the signIn() method
+                onPressed: () => ref.read(authProvider.notifier).signIn(),
+                icon: const Icon(FontAwesomeIcons.google),
+                label: const Text('Sign in with Google'),
+                style: ButtonStyle(
+                  // Set the fixed size of the button
+                  fixedSize: WidgetStateProperty.all(const Size(350, 60)),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      ],
+    ));
   }
 }

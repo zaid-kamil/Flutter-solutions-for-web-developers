@@ -15,7 +15,7 @@ class BackgroundImage extends StatelessWidget {
     return Positioned.fill(
       child: Image.asset(
         localPath,
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
         repeat: ImageRepeat.repeat,
         width: double.infinity,
         height: double.infinity,

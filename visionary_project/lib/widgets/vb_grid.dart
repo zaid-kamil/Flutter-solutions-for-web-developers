@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:visionary_project/core/constants.dart';
 import 'package:visionary_project/providers/vision_provider.dart';
 import 'package:visionary_project/widgets/vb_card.dart';
 import 'package:visionary_project/widgets/vb_form.dart';
@@ -18,7 +19,16 @@ class VisionGrid extends ConsumerWidget {
       // check state and data to return the appropriate widget
       data: (visionItems) {
         if (visionItems.isEmpty) {
-          return const Center(child: Text('No items found'));
+          return const Center(
+            child: Text(
+              Constants.emptyBoardMessage,
+              style: TextStyle(
+                fontSize: 32,
+                color: Colors.white,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          );
         } else {
           return GridView.builder(
             padding: const EdgeInsets.all(30),

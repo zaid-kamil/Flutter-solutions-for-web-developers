@@ -11,7 +11,7 @@ class Constants {
 
   // UI Strings
   static const String appTitle = 'Visionary';
-  static const String addVisionItem = 'Add new item to your vision board';
+  static const String addVisionItem = 'Add/Edit your vision here!';
   static const String editVisionItem = 'Edit';
   static const String deleteVisionItem = 'Delete';
   static const String saveVisionItem = 'Save';
@@ -33,6 +33,6 @@ class Constants {
 
   // Image Placeholders
   static const String placeholderImage = "assets/images/default.jpg";
-  // appbar height for web
-  static const double appBarHeightWeb = 100.0;
+
+  static String sidebarTitle = 'Welcome to your Vision Board!';
 }

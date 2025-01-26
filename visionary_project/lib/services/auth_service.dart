@@ -15,9 +15,13 @@ class AuthService {
   /// Signs in the user with Google authentication
   Future<AuthState> signInWithGoogle() async {
     try {
+      // Create a Google auth provider
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
+      // show the Google sign-in dialog
       var userCredentials = await _auth.signInWithPopup(googleProvider);
+      // If the user is not null, the sign-in was successful
       if (userCredentials.user != null) {
+        // update the state to reflect the user's login status
         return AuthState(
           isLoggedIn: true,
         );

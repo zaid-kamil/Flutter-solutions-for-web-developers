@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visionary_project/core/constants.dart';
 
 /// A drawer widget for the Visionary app
 class VisionDrawer extends StatelessWidget {
@@ -24,7 +25,6 @@ class VisionDrawer extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(0)),
       ),
       elevation: 2,
-      width: 400,
       backgroundColor: color,
       child: Column(
         children: [
@@ -36,7 +36,7 @@ class VisionDrawer extends StatelessWidget {
               child: Column(
                 children: [
                   FlutterLogo(size: 100),
-                  Text("Welcome to your visionary board!"),
+                  Text(Constants.sidebarTitle),
                 ],
               ),
             ),
