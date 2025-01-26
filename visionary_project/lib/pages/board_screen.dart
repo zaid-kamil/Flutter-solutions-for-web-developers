@@ -9,7 +9,7 @@ import 'package:visionary_project/providers/vision_provider.dart';
 import 'package:visionary_project/widgets/bg_image.dart';
 import 'package:visionary_project/widgets/vb_form.dart';
 import 'package:visionary_project/widgets/vb_grid.dart';
-import 'package:visionary_project/widgets/vb_side_bar.dart';
+import 'package:visionary_project/widgets/vb_sidebar.dart';
 
 class BoardScreen extends ConsumerStatefulWidget {
   const BoardScreen({super.key});
