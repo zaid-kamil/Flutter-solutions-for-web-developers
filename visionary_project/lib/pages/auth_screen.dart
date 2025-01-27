@@ -73,7 +73,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 // Read the authProvider.notifier and call the signIn() method
                 onPressed: () => ref.read(authProvider.notifier).signIn(),
                 icon: const Icon(FontAwesomeIcons.google),
-                label: const Text('Sign in with Google'),
+                label: const Text(Constants.googleSignInButtonText),
                 style: ButtonStyle(
                   // Set the fixed size of the button
                   fixedSize: WidgetStateProperty.all(const Size(350, 60)),

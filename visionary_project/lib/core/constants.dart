@@ -1,4 +1,4 @@
-// shared/constants.dart
+// core/constants.dart
 
 class Constants {
   // Firestore Collections
@@ -6,7 +6,6 @@ class Constants {
 
   // Routes (for navigation)
   static const String boardScreen = '/board';
-  static const String manageScreen = '/manage';
   static const String authScreen = '/auth';
 
   // UI Strings
@@ -27,12 +26,11 @@ class Constants {
 
   // Miscellaneous
   static const String googleSignInButtonText = 'Sign in with Google';
-  static const String logoutTip = 'Logout';
-  static const String confirmDeleteMessage =
-      'Are you sure you want to delete this vision item?';
 
   // Image Placeholders
   static const String placeholderImage = "assets/images/default.jpg";
 
   static String sidebarTitle = 'Welcome to your Vision Board!';
+
+  // todo: add more constants as needed
 }
