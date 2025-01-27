@@ -6,9 +6,9 @@ import 'package:visionary_project/core/constants.dart';
 import 'package:visionary_project/notifiers/vision_notifier.dart';
 import 'package:visionary_project/providers/auth_provider.dart';
 import 'package:visionary_project/providers/vision_provider.dart';
-import 'package:visionary_project/widgets/bg_image.dart';
 import 'package:visionary_project/widgets/vb_form.dart';
 import 'package:visionary_project/widgets/vb_grid.dart';
+import 'package:visionary_project/widgets/vb_image.dart';
 import 'package:visionary_project/widgets/vb_sidebar.dart';
 
 class BoardScreen extends ConsumerStatefulWidget {
