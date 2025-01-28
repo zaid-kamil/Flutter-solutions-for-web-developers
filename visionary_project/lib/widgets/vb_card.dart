@@ -21,11 +21,6 @@ class VisionItemCard extends StatelessWidget {
     required this.onDelete,
   });
 
-  /// Formats a [DateTime] object to a string in the format 'day-month-year'
-  String formatDate(DateTime date) {
-    return '${date.day}-${date.month}-${date.year}';
-  }
-
   @override
   Widget build(BuildContext context) {
     const double height = 600;

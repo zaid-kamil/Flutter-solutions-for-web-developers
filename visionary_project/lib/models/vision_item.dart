@@ -1,4 +1,4 @@
-// shared/vision_item.dart
+// lib/models/vision_item.dart
 class VisionItem {
   final String id; // Unique identifier for Firestore document
   final String itemText; // The name of the item
