@@ -22,21 +22,57 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   @override
   void initState() {
     super.initState();
-    // The addPostFrameCallback() method is used to execute a callback after the frame has been rendered
+    // this callback is called after the frame is displayed
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // read the authProvider.notifier and call the checkLoginStatus() method
       ref.read(authProvider.notifier).checkLoginStatus();
     });
   }
 
+  /// Handles the sign-in button press event
+  void onSignInPressed() {
+    ref.read(authProvider.notifier).signIn();
+  }
+
+  /// Builds the center content of the screen
+  Widget buildAuthCenter(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            Constants.appTitle,
+            style: TextStyle(
+              fontSize: 77,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton.icon(
+            // Call the onSignInPressed method
+            onPressed: onSignInPressed,
+            icon: const Icon(FontAwesomeIcons.google),
+            label: const Text(Constants.googleSignInButtonText),
+            style: ButtonStyle(
+              // Set the fixed size of the button
+              fixedSize: WidgetStateProperty.all(const Size(350, 60)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // The ref.listen() method is used to listen to changes in the state of a provider.
+    // Task 1: listen to the AuthState changes
     ref.listen<AuthState>(authProvider, (previous, next) {
       if (next.isLoggedIn) {
         // replace the current screen with the VisionBoardScreen
         Navigator.pushReplacementNamed(context, Constants.boardScreen);
       } else if (next.errorMessage != null) {
+        // show a snackbar with the error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(next.errorMessage ?? 'An error occurred'),
@@ -45,43 +81,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         );
       }
     });
-
+    // Task 2: set the page layout
     return Scaffold(
         body: Stack(
       children: [
-        BackgroundImage(),
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                Constants.appTitle,
-                style: TextStyle(
-                    fontSize: 77,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 10.0,
-                        color: Colors.black,
-                        offset: Offset(5.0, 5.0),
-                      ),
-                    ]),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton.icon(
-                // Read the authProvider.notifier and call the signIn() method
-                onPressed: () => ref.read(authProvider.notifier).signIn(),
-                icon: const Icon(FontAwesomeIcons.google),
-                label: const Text(Constants.googleSignInButtonText),
-                style: ButtonStyle(
-                  // Set the fixed size of the button
-                  fixedSize: WidgetStateProperty.all(const Size(350, 60)),
-                ),
-              ),
-            ],
-          ),
-        ),
+        BackgroundImage(), // the background image
+        buildAuthCenter(context), // the center content
       ],
     ));
   }

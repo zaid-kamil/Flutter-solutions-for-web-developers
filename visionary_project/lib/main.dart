@@ -3,10 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:visionary_project/core/constants.dart';
+import 'package:visionary_project/firebase_options.dart';
 import 'package:visionary_project/pages/auth_screen.dart';
 import 'package:visionary_project/pages/board_screen.dart';
-
-import 'firebase_options.dart';
 
 /// The main entry point of the application
 Future<void> main() async {

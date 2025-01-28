@@ -22,7 +22,6 @@ class Constants {
   // Firestore Fields
   static const String itemTextField = 'itemText';
   static const String imageUrlField = 'imageUrl';
-  static const String timestampField = 'timestamp';
 
   // Miscellaneous
   static const String googleSignInButtonText = 'Sign in with Google';

@@ -15,6 +15,7 @@ enum VisionResult {
 /// Service class for handling vision board operations
 class VisionBoardService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // a StreamController to manage the stream of vision items
   final StreamController<List<VisionItem>> _visionItemsController =
       StreamController.broadcast();
 
@@ -49,7 +50,6 @@ class VisionBoardService {
       await visionCollection.add({
         Constants.itemTextField: itemText,
         Constants.imageUrlField: imageUrl,
-        Constants.timestampField: FieldValue.serverTimestamp(),
       });
       return VisionResult.success;
     } catch (e) {

@@ -1,6 +1,6 @@
 // lib/services/auth_service.dart
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:visionary_project/states/auth_state.dart';
 
 /// Service class for handling authentication
