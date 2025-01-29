@@ -39,21 +39,26 @@ class BoardScreenState extends ConsumerState<BoardScreen> {
     );
   }
 
+  void handleSignOut(BuildContext context) {
+    ref.read(authProvider.notifier).signOut();
+    Navigator.pushReplacementNamed(context, Constants.authScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
     final visionItemsNotifier = ref.read(visionItemsNotifierProvider.notifier);
     return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth > 600) {
         return LandscapeScaffold(
-          ref: ref,
           visionItemsNotifier: visionItemsNotifier,
           buildAddForm: buildAddForm,
+          handleSignOut: handleSignOut,
         );
       } else {
         return PortraitScaffold(
-          ref: ref,
           visionItemsNotifier: visionItemsNotifier,
           buildAddForm: buildAddForm,
+          handleSignOut: handleSignOut,
         );
       }
     });
@@ -61,16 +66,16 @@ class BoardScreenState extends ConsumerState<BoardScreen> {
 }
 
 class LandscapeScaffold extends StatelessWidget {
-  final WidgetRef ref;
   final VisionItemsNotifier visionItemsNotifier;
   final Future<dynamic> Function(BuildContext, VisionItemsNotifier)
       buildAddForm;
+  final void Function(BuildContext) handleSignOut;
 
   const LandscapeScaffold({
     super.key,
-    required this.ref,
     required this.visionItemsNotifier,
     required this.buildAddForm,
+    required this.handleSignOut,
   });
 
   @override
@@ -82,14 +87,11 @@ class LandscapeScaffold extends StatelessWidget {
           Row(
             children: [
               VisionDrawer(
-                color: Colors.white.withValues(alpha: 0.9),
-                signOut: () {
-                  ref.read(authProvider.notifier).signOut();
-                  Navigator.pushReplacementNamed(context, Constants.authScreen);
-                },
+                color: Colors.white.withOpacity(0.9),
+                signOut: () => handleSignOut(context),
                 addItem: () => buildAddForm(context, visionItemsNotifier),
               ),
-              Expanded(child: VisionGrid())
+              const Expanded(child: VisionGrid())
             ],
           ),
         ],
@@ -99,28 +101,25 @@ class LandscapeScaffold extends StatelessWidget {
 }
 
 class PortraitScaffold extends StatelessWidget {
-  final WidgetRef ref;
   final VisionItemsNotifier visionItemsNotifier;
   final Future<dynamic> Function(BuildContext, VisionItemsNotifier)
       buildAddForm;
+  final void Function(BuildContext) handleSignOut;
 
   const PortraitScaffold({
     super.key,
-    required this.ref,
     required this.visionItemsNotifier,
     required this.buildAddForm,
+    required this.handleSignOut,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("V I S I O N A R Y")),
+      appBar: AppBar(title: const Text("V I S I O N A R Y")),
       drawer: VisionDrawer(
-        color: Colors.white.withValues(alpha: 0.9),
-        signOut: () {
-          ref.read(authProvider.notifier).signOut();
-          Navigator.pushReplacementNamed(context, Constants.authScreen);
-        },
+        color: Colors.white.withOpacity(0.9),
+        signOut: () => handleSignOut(context),
         addItem: () {
           Navigator.pop(context);
           buildAddForm(context, visionItemsNotifier);
@@ -129,7 +128,7 @@ class PortraitScaffold extends StatelessWidget {
       body: Stack(
         children: [
           const BackgroundImage(),
-          Expanded(child: VisionGrid()),
+          const VisionGrid(),
         ],
       ),
     );

@@ -28,32 +28,48 @@ class VisionDrawer extends StatelessWidget {
       backgroundColor: color,
       child: Column(
         children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Center(
-              child: Column(
-                children: [
-                  FlutterLogo(size: 100),
-                  Text(Constants.sidebarTitle),
-                ],
-              ),
-            ),
-          ),
-          ListTile(
-            hoverColor: Colors.white,
-            leading: const Icon(Icons.add_box),
-            title: const Text('A D D   I T E M'),
+          buildDrawerHeader(),
+          buildListTile(
+            icon: Icons.add_box,
+            text: 'A D D   I T E M',
             onTap: addItem,
           ),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('L O G O U T'),
+          buildListTile(
+            icon: Icons.logout,
+            text: 'L O G O U T',
             onTap: signOut,
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildDrawerHeader() {
+    return DrawerHeader(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            const FlutterLogo(size: 100),
+            Text(Constants.sidebarTitle),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildListTile({
+    required IconData icon,
+    required String text,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      hoverColor: Colors.white,
+      leading: Icon(icon),
+      title: Text(text),
+      onTap: onTap,
     );
   }
 }
